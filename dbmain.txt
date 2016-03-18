@@ -1,0 +1,1140 @@
+SQL
+===
+SELECT STATEMENT
+LIMIT
+TOP
+INSERT
+UPDATE
+DELETE
+TRUNCATE TABLE STATEMENT
+UNION OPERATOR
+UNION ALL OPERATOR
+INTERSECT OPERATOR
+MINUS OPERATOR
+EXCEPT OPERATOR
+
+
+SQL ALIASES 
+
+
+CLAUSES
+=========
+DISTINCT
+FROM
+WHERE
+ORDER BY
+GROUP BY
+HAVING
+
+
+FUNCTIONS
+==========
+COUNT
+SUM
+MIN
+MAX
+AVG
+
+
+TABLES AND VIEW
+==============
+CREATE TABLE
+CREATE TABLE AS
+ALTER TABLE
+DROP TABLE
+GLOBAL TEMP TABLES
+LOCAL TEMP TABLES
+SQL VIEW
+
+
+
+KEYS, CONSTRAINTS AND INDEXES
+=============================
+PRIMARY KEYS
+INDEXES  
+	Create and drop indexes (performance tuning)
+
+
+
+SQL DATA TYPES
+
+
+PLSQL
+=====
+CONDITIONAL STATEMENTS
+ITERATIVE STATEMENTS
+CURSORS
+PROCEDURES
+FUNCTIONS
+PARAMETERS-PROCEDURE, FUNCTION
+EXCEPTION HANDLING
+TRIGGERS
+
+
+
+TEMPORARY TABLES  => LOCAL (#)  AND GLOBAL (##)
+
+MAGIC TABLES
+
+
+
+FILLFACTOR 
+CASCADING REFERENTIAL INTEGRITY
+======================================================
+
+
+
+
+SQL OVERVIEW
+===========================================================================
+ 
+ DDL (Data Definition Language)	    - CREATE, ALTER, DROP	
+ DML (Data Manipulation Language)   - SELECT, INSERT, UPDATE, DELETE
+ DCL (Data Control Language)        - GRANT, REVOKE
+ DQL (Data Query Language)          - SELECT
+ TCL (Transaction Control Language) - BEGIN, TRAN, COMMIT, TRAN, ROLLBACK
+
+============================================================================
+
+
+
+
+SELECT TOP RECORDS
+==================
+select top(N) * from TABLENAME
+
+
+SELECT *
+FROM (
+     SELECT *, ROW_NUMBER() OVER (ORDER BY COLUMNNAME) AS RowNum
+     FROM TABLENAME
+     ) AS MyDerivedTable
+WHERE MyDerivedTable.RowNum BETWEEN N AND N
+
+EX
+==
+SELECT *
+FROM (
+     SELECT *, ROW_NUMBER() OVER (ORDER BY UNIQUE_ID) AS RowNum
+     FROM Users
+     ) AS MyDerivedTable
+WHERE MyDerivedTable.RowNum BETWEEN 10 AND 20
+
+
+
+SELECT TOP N * from (select top N * from TABLENAME order by COLUMNNAME)a order by COLUMNNAME
+==================================
+
+
+
+
+Unique with null in sql server
+=========================================
+alter table tablename
+add constraint Constraint_name unique(Column1, Column2)
+=========================================
+
+
+
+
+
+
+USE DBNAME
+
+ALTER LOGIN [sa] ENABLE;
+ALTER LOGIN sa WITH PASSWORD='sa'; 
+
+
+SELECT * FROM SYS.TABLES
+
+SELECT * FROM SYS.___________ //WE HAVE LOT INFO REGARDING SYSTEM OBJECTS
+
+SELECT * FROM INFORMATION_SCHEMA.VIEWS
+
+SELECT * FROM INFORMATION_SCHEMA.CHECK_CONSTRAINTS
+
+SELECT * FROM INFORMATION_SCHEMA.TABLE_PRIVILEGES
+
+SELECT * FROM INFORMATION_SCHEMA.VIEW_TABLE_USAGE
+
+SP_HELP   = ALT+F1
+
+ALT+F1 (SP_HELPTEXT) -> It shows all  Tables/ Views/ Sp's/ Extended Sp's/ Assembly Sp's/ Aggregate Functions/ Inline Functions/ Scalar Funtions/ System Tables/ User Tables/ PK's/ FK's/ Unique Key Constraints 
+
+
+SP_HELPDB
+
+SP_HELPFILE
+
+SP_WHO
+
+SP_TABLES
+
+SP_SPACEUSED
+
+SP_HELPINDEX[SCHEMA.TABLENAME]
+
+SP_HELPCONSTRAINT[SCHEMA.TABLENAME]
+
+SP_DEPENDS[SCHEMA.TABLENAME]
+
+
+SELECT name, is_master_key_encrypted_by_server FROM sys.databases
+================================================================
+DATABASE ENCRYPTED OR NOT HERE YOU KNOW THE INFORMATION
+
+
+
+SP_DATABASES
+============
+VIEW THE CURRENT ALL DATABASES IN YOUR SYSTEM
+
+
+SP_HELPDB DBNAME
+===============
+DATABASE INFORMATION
+
+
+SP_DATATYPE_INFO
+================
+VIEW THE DATA TYPE DETAILS LIKE TYPE_NAME, DATA_TYPE, PRECISION AND Etc.,
+
+
+SP_SERVER_INFO
+==============
+VIEW THE SERVER INFORMATION
+
+
+
+CURRENT SESSION DETAILS
+=========================
+
+SELECT * FROM [sys].[dm_exec_connections] ec WHERE session_id = @@SPID
+
+
+
+SP_DBCMPTLEVEL
+==============
+IT SHOWS THE COMPATABILITY LEVEL OF SQL SEVER (90= SQL SERVER 2005, 100 = 2008, 110 = 2012, 120 = 2014 AND 130 = 2016 CTP2(COMMUNITY TECHNOLOGY PREVIEW2))
+
+sp_dbcmptlevel @DBNAME = DBNAME,  @new_cmptlevel =  VERSION
+
+
+
+DIFFERENCE BETWEEN SP_WHO AND SP_WHO2  ?
+========================================
+SP_WHO HAVE SPID, ECID, STATUS, LOGINAME, HOSTNAME, BLK, DBNAME, CMD, REQUEST_ID
+
+SP_WHO2 HAVE CPUTime, DiskIO, LastBatch, AND ProgramName
+==============================================================
+
+
+
+COPY ONE DB TO ANOTHER DB  ?
+==================================================
+RIGHT CLICK -> TASKS -> GENERATE SCRIPT
+
+CHECK THE FILE
+
+CHANGE THE DB NAME
+
+EXECUTE IN THE NEW QUERY BROWSER IN MS SQL SERVER
+==================================================
+
+
+
+
+VIEW/FUNCTION/STORED PROCEDURE CHANGE SCHEMA ?
+==============================================
+ALTER SCHEMA NEWSCHEMANAME TRANSFER dbo.VIEW/FUNCTION/SP NAME
+
+
+
+ROLES
+=====
+CREATE ROLE ROLE_NAME
+
+DROP ROLE ROLE_NAME
+
+
+IF YOU DELETE DATABASE ROLE IN SQL SERVER ?
+======================================
+ALTER AUTHORIZATION ON SCHEMA::[YOUR_SCHEMA_NAME] TO dbo
+
+THEN DELETE THE DATABASE ROLE
+
+
+
+
+=========================
+DATE AND TIME QUERIES
+=========================
+SELECT GETDATE() AS CURRENTDATE
+SELECT CAST(GETDATE()AS date)  AS CURRENTDATE 
+SELECT CAST(GETDATE()AS datetime)  AS CURRENTDATE 
+SELECT CAST(GETDATE()AS smalldatetime)  AS CURRENTDATE 
+SELECT CAST(GETDATE()AS datetime2)  AS CURRENTDATE 
+SELECT CAST(GETDATE()AS datetimeoffset)  AS CURRENTDATE
+ 
+SELECT CAST(GETDATE()AS time)  AS CURRENTTIME /* TIME(7)*/
+SELECT CAST(GETDATE()AS time(0))  AS CURRENTTIME 
+SELECT CAST(CURRENT_TIMESTAMP AS date)  AS CURRENTDATE 
+SELECT CAST(CURRENT_TIMESTAMP AS time)  AS CURRENTDATE 
+SELECT CAST(CURRENT_TIMESTAMP AS time(0))  AS CURRENTDATE 
+
+SELECT DATEDIFF(YEAR, GETDATE(), GETDATE()+900)
+SELECT DATEDIFF(YYYY, GETDATE(), GETDATE()+900)
+SELECT DATEDIFF(DAYOFYEAR, GETDATE(), GETDATE()+1)
+SELECT DATEDIFF(QUARTER, GETDATE(), GETDATE()+900)
+SELECT DATEDIFF(MONTH, GETDATE(), GETDATE()+900)
+SELECT DATEDIFF(WEEK, GETDATE(), GETDATE()+900)
+SELECT DATEDIFF(WEEKDAY, GETDATE(), GETDATE()+900)
+SELECT DATEDIFF(DAY, GETDATE(), GETDATE()+10)
+SELECT DATEDIFF(DD, GETDATE(), GETDATE()+1)
+SELECT DATEDIFF(HH, GETDATE(), GETDATE()+1)
+SELECT DATEDIFF(MI, GETDATE(), GETDATE()+1)
+SELECT DATEDIFF(SS, GETDATE(), GETDATE()+1)
+SELECT DATEDIFF(MILLISECOND, GETDATE(), GETDATE()+1)
+
+
+SELECT LTRIM(datediff(MI, 0, '00:15:00')) AS DURATION
+ /* TIME(7) LIKE 00:10:00 THEN USE LTRIM AND PARTICULAR COLUMN DIFFERENCE START AT O*/
+SELECT LTRIM(datediff(HH, 0, '16:15:00')) 
+ SELECT LTRIM(datediff(SS, 0, '00:0:50')) 
+
+
+SELECT CONVERT(VARCHAR(25), DATEADD(DD, -(DAY(GETDATE())-1), GETDATE()), 101) /*CURRENT MONTH FIRST DATE*/
+
+ 
+SELECT DATENAME(DW , '2015-09-08') //GET DAY NAME
+SELECT DATENAME(DAY , '1987-11-19') //GET DAY
+SELECT DATENAME(MONTH , '1987-11-19') //GET MONTH NAME
+SELECT DATENAME(YEAR , '1987-11-19')  //GET YEAR
+SELECT DATENAME(DAYOFYEAR, GETDATE()) //GET DAY OF YEAR
+SELECT DATENAME(ISO_WEEK, GETDATE()) //GET WEEK
+
+
+SELECT DATEADD(DAY, 0, GETDATE()) //ADDING DAYS
+SELECT DATEADD(MONTH, 10, GETDATE()) //ADDING MONTHS
+SELECT DATEADD(YEAR, 2, GETDATE()) //ADDING YEAR
+
+SELECT CONVERT(DATE, DATEADD(DAY, 60, GETDATE())); //ADDING DAYS
+
+
+SELECT GETDATE() 'Now',DATEADD(hour,2,GETDATE()) 'Now + 2 Hours' //ADDING HRS., 
+
+
+SELECT CONVERT(DATE, GETDATE()) /* YEAR,MM,DAY FORMAT BECAUSE SQL SERVER STORES THIS FORMAT*/
+SELECT CONVERT(date, (SELECT ... STATEMENTS LIKE GET COLUMN VALUE THAT VALUE MUST BE DATE TYPE) )
+=======================
+
+
+
+==================
+ PROCEDURES
+==================
+ CREATE/ALTER PROCEDURE PROCEDURENAME
+	INPUT VARIABLES ARE DIRECTLY MENTION  AS   @VARIABLE_NAME DATATYPE
+	OUTPUT VARIABLES ARE MENTION  AS @VARIABLE_NAME DATATYPE OUTPUT
+
+	OPTIONAL VARIABLE ARE MENTION AS
+@VARIABLE_NAME DATATYPE = NULL	
+
+ AS
+ BEGIN
+	
+	/* BASED ON THE OPTINAL VARIABLES WE ARE DECIDE THE CONDITIONS..*/
+		
+
+	/* INPUT VARIABLE IS VARCHAR AND IT IS IN UNIQUE IDENTIFIER DATATYPE THEN YOU MUST MANDATORY TO CONVERT
+	
+	DECLARE @VARIABLENAME uniqueidentifier
+	SET @VARIABLENAME1 = CONVERT(uniqueidentifier, @VARIABLENAME)
+	HERE VARIABLENAME IS ALREADY DECLARE IN DECLARATION SECTION
+	*/
+
+
+	/* LOCAL VARIABLES ARE ALSO MENTION HERE 
+	
+	DECLARE VARIABLENAME DATATYPE
+	HERE YOU MUST SET THE VALUE OF VARIABLENAME THAT IS 
+	SET VARIABLENAME = VALUE (OR) FUNCTION (OR) SELECT STATEMENT
+	(OR)
+	DECLARE VARIABLENAME DATATYPE= VALUE
+	(OR)
+	DECLARE VARIABLENAME DATATYPE= SELECT STATEMENT
+
+	 */
+
+
+	 /*
+		CONDITIONS ARE ACCORDING TO YOUR REQUIREMENT LIKE
+		YOU USE ., EVERY STATEMENT MUST AND SHOULD BEGIN AND END
+		
+		IF, IF-ELSE, WHILE AND ETC., 
+		   (OR)
+		 IF EXISTS (STATEMENT) , WHILE EXISTS (STATEMENT) ETC., 
+
+		NOTE - FOR LOOP IS NOT HERE
+
+	   */
+
+
+	   /* 
+	   */
+
+	  PRINT 'YOUR MESSAGES'
+ END
+=====================================
+
+
+ENCRYPTION IS NOT POSSIBLE FOR
+=============================
+REPLICATION DATA DB
+FILE STREAM DATA
+
+
+
+
+COLUMN LEVEL ENCRYPTION PROCESS
+================================
+(referance link
+http://www.c-sharpcorner.com/Blogs/48626/encrypt-and-decrypt-column-value-in-sql-server-table.aspx )
+
+
+
+USE DATABASE
+
+CREATE MASTER KEY ENCRYPTION BY PASSWORD = 'YOURSTRONGPASSWORD'
+
+
+CREATE CERTIFICATE CERTIFICATENAME WITH SUBJECT = 'DESCRIPTION OF Certificate'
+
+
+CREATE SYMMETRIC KEY   SYMMETRICKEYNAME
+WITH ALGORITHM   = AES_128 
+ENCRYPTION BY   CERTIFICATE CERTIFICATENAME;
+
+(ALGORITHMS LIKE AES 128, 192, 256)
+
+
+CREATE TABLE TABLENAME
+(
+VARIABLENAME VARBINARY(SIZE) //THIS IS THE ENCRYPT COLUMN
+)
+
+
+INSERT DATA
+
+
+SELECT ENCRYPTEDCOLUMN FROM TABLE
+
+
+
+
+HOW TO INSERT THE ENCRYPT COLUMN VALUES
+========================================
+OPEN SYMMETRIC KEY SYMMETRICKEYNAME DECRYPTION BY CERTIFICATE CERTIFICATENAME
+
+INSERT INTO SCHEMA.TABLENAME(FIELD01, FIELD02, FIELD03)
+VALUES (FIELD01, EncryptByKey(Key_GUID('SYMMETRICKEYNAME'),'VALUEOFTEXT'), FIELD03)
+
+CLOSE SYMMETRIC KEY SYMMETRICKEYNAME 
+
+
+EX=>
+
+OPEN SYMMETRIC KEY Key4CellEncryption DECRYPTION BY CERTIFICATE Cert4Cell
+
+
+INSERT INTO dbo.Employee(NAME, MYPASSWORD, Email)
+VALUES ('Raja001', EncryptByKey(Key_GUID('Key4CellEncryption'),'Sekhar'), 'rs@gmail.com')
+
+CLOSE SYMMETRIC KEY Key4CellEncryption 
+===========================================
+
+
+
+
+
+
+IF YOU WANT SEE THE ENCRYPTED VALUE
+===================================
+OPEN SYMMETRIC KEY SYMMETRICKEYNAME DECRYPTION BY CERTIFICATE CERTIFICATENAME
+
+SELECT CONVERT(VARCHAR(SIZE), DECRYPTBYKEY(COLUMNNAME))AS ALIASCOLUMNNAME FROM TABLENAME
+
+CLOSE SYMMETRIC KEY SYMMETRICKEYNAME 
+====================================
+ 
+
+
+
+
+HOW TO VIEW THE DATABASEKEY AND SERVICE MASTER KEY
+=================================================
+SELECT * FROM master.sys.symmetric_keys 
+
+
+
+
+ENCRYPTED OR NOT
+======================
+Select O.name, S.definition, O.type_desc,
+CASE 
+WHEN DEFINITION IS NULL THEN 'YES'
+ELSE 'NO'
+END as 'IS_ENCRYPTTED'
+from SYS.sql_modules S INNER JOIN 
+SYS.objects O ON S.object_id= O.object_id 
+WHERE type IN ('P','TR','FN','TF','V') 
+
+
+
+
+
+
+IF ALREADY EXISTS THE MASTERKEY AND CERTIFICATE
+================================================
+DROP MASTER KEY MASTERKEYNAME
+
+DROP CERTIFICATE CERTIFICATENAME
+
+DROP SYMMETRIC KEY SYMMETRICKEYNAME
+
+
+
+
+
+
+
+ENCRYPT THE FUNCTIONS OR PROCEDURES 
+===================================
+SELECT * FROM sys.all_sql_modules WHERE object_id=OBJECT_ID('SCHEMA.FUNCTIONNAME') 
+
+IF ALREADY HAVE A FUNCTION MODIFY FUNCTIONS AND THEN RETURN DATATYPE AFTER THAT "WITH  ENCRYPTION"
+
+SAVE THE FUNCTION
+
+SELECT DEFINITION FROM SYS.all_sql_modules WHERE object_id= OBJECT_ID('SCHEMA.FUNCTIONNAME/PROCEDURENAME')
+
+IT SHOWS 
+'The text for object 'SCHEMA.FUNCTIONNAME/PROCEDURENAME' is encrypted.'
+
+
+
+
+
+IF YOU MODIFY THE ENCRYPTED FUNCTIONS/PROCEDURES
+===============================================
+USE MASTER //BY DEFAULT
+GO TO PROGRAMMABILITY  ==> STORED PROCEDURES ==> SCHEMA.PROCEDURENAME ==> RIGHT CLICK AND MODIFY
+
+
+
+
+
+
+
+
+INSERT A VARBINARY VALUE
+=========================
+INSERT INTO TABLENAME (FIELDS...) VALUES (VARBINARY FILED--CAST('YOURINPUT' as varbinary(SIZEMENTIONINTHEDESIGN)))
+
+
+
+
+
+
+
+
+=========================================
+C: Check constraint
+D: Default constraint
+F: Foreign Key constraint
+L: Log
+P: Stored procedure
+PK: Primary Key constraint
+RF: Replication Filter stored procedure
+S: System table
+SQ: Service Queue
+TA: Assembly (CLR) DML trigger
+TF: Table-valued-Function
+TT: Table Type
+TR: Trigger
+U: User table
+UQ: Unique constraint
+V: View
+X: Extended stored procedure
+==========================================
+
+
+
+
+
+HOW WILL COPY THE STRUCTURE  OF TABLE WITHOUT COPYING THE DATA
+==============================================================
+UNIVERSAL FALSE CONDITION IS THE CREATE COPY THE STRUCTURE
+
+CREATE TABLE TABLENAME AS SELECT * FROM OLDTABLE WHERE 1=2 
+//1=2 IS UNIVERSAL WRONG CONDITION  
+		  (OR)
+SELECT * INTO NEWTABLENAME FROM OLDTABLENAME WHERE 1=2
+
+
+
+
+
+Enum in SQL SERVER (IN)
+=======================
+FIELDNAME DATATYPE(SIZE) NOT NULL CHECK(FIELDNAME IN('','','') ) //IT IS NOT ALLOW TO NULLS
+FIELDNAME DATATYPE(SIZE) CHECK(FIELDNAME IN('','','') ) // IS IS ALLOW TO NULLS
+
+
+
+
+
+If you want select user Procedure/Function/Views
+================================================
+select * from sys.objects WHERE type in ('p','tr','FN','tf','v')
+
+
+
+
+
+Data Capture Changes -- like insert/ update/ delete 
+we are using 
+=====================================================
+alter database DATABASENAME
+SET CHANGE_TRACKING = ON
+(CHANGE_RETENTION = 2 DAYS, AUTO_CLEANUP = ON)
+
+
+
+
+ALTER TABLE [SCHEMA.TABLENAME]
+ENABLE CHANGE_TRACKING
+WITH (TRACK_COLUMNS_UPDATED = ON)
+
+
+
+SELECT * FROM [sys].[change_tracking_databases]
+
+
+SELECT * FROM [sys].[change_tracking_tables]
+
+
+SELECT COUNT(*) FROM sys.change_tracking_tables
+
+
+
+
+In the Start menu > All Programs > 'Microsoft Sql Server' there should be a menu option for 'Integration Services' > 'Execute Package Utility' (this is available if SSIS was included in your SQLserver installation).
+
+
+
+
+
+
+
+HOW TO ATTACH THE DATABASE
+============================
+NOTE :=>>    SQL SERVER => RUN AS ADMINISTRATOR MODE
+-
+MDF => PROPERTIES => ADVANCED SECURITY FOR  DATABASE.MDF => CHANGE PERMISSIONS => ADD => ADD => YOUR NAME => OK => PERMISSION ENTRY => FULL CONTROL => ACCEPT ALLOW => OK 
+
+=========================================================
+
+
+
+
+
+WORKING WITH TABLE VARIABLE
+===========================
+DECLARE @VARIABLENAME TABLE (COLUMNNAMES DATATYPES)
+//HERE TABLE IS A TYPE
+
+
+
+//INSERT VALUES INTO VARIABLE
+INSERT INTO @VARIABLENAME SELECT COLUMNNAMES FROM SCHEMA.TABLENAME
+
+
+//SELECT COLUMNNAMES FROM @VARIABLENAME
+
+
+
+
+EX
+====
+DECLARE @TTT TABLE(Unique_ID uniqueidentifier, Doctor_UID uniqueidentifier, S_Date Date, E_Date Date, Time_Slot_Duration time(0))
+	DECLARE @uuuid varchar(max)
+	
+	INSERT INTO @TTT
+	SELECT Unique_ID, Doctor_UID, Start_Date, End_Date, Time_Slot_Duration From Doctor.Calendars 
+
+
+	SELECT Unique_ID, Doctor_UID, S_Date, E_Date, Time_Slot_Duration FROM @TTT 
+	WHERE Doctor_UID='F9DC7F43-0486-48D6-9DC4-0274AFB05E6E' 
+	AND S_Date='2015-01-01' OR E_Date='2015-03-31'
+
+
+
+
+
+
+
+
+
+
+
+WORK WITH TEMPORARY TABLES
+==========================
+DATABASE OBJECT 
+
+
+LOCAL TEMPORARY TABLES
+=====================
+create table #TABLENAME (
+VARIABLENAME DATATYPE(SIZE) PRIMARY KEY
+)
+
+
+Insert into #TABLENAME values ('VALUES')
+ (OR)
+INSERT INTO #TABLENAME SELECT 'VALUE1' UNION SELECT 'VALUE2'
+ UNION SELECT 'VALUE3'UNION SELECT'VALUE4'UNION SELECT'VALUE5'
+
+
+DROP TABLE #TABLENAME
+
+NOTE : =>> LOCAL TEMP TABLE ACCESSING IN ONLY SINGLE TAB., 
+
+IF YOU WANT WORK WITH THE ANOTHER OBJECT YOU CAN GO FOR GLOBAL TEMPORARY TABLES
+
+================================================
+ex
+==
+
+
+	  CREATE TABLE #tabCalenders
+		(
+		Unique_ID uniqueidentifier,
+		Doctor_UID uniqueidentifier,
+		S_Date Date,
+		E_Date Date,
+		Time_Slot_Duration time(7)
+		)
+
+		ALTER TABLE #tabCalenders add name varchar(35)
+
+		SELECT * FROM #tabCalenders
+
+		INSERT INTO #tabCalenders (Unique_ID, Doctor_UID, S_Date, E_Date, Time_Slot_Duration) 
+		select Unique_ID, Doctor_UID, Start_Date, End_Date, Time_Slot_Duration FROM Doctor.Calendars
+	
+
+		Drop TABLE #tabCalenders
+
+
+
+=================================================
+
+
+
+
+
+
+
+
+
+
+
+
+GLOBAL TEMPORARY TABLES
+========================
+HERE THE DEFERENCE LOCAL AND GLOBAL ONLY '#'
+ REMAINING ALL SAMETHING 
+
+IN LOCAL YOU MENTION SINGLE# BUT GLOBAL DB YOU MENTION DOUBLE##
+=======
+
+
+IF YOU SEE THE TOTAL INFO REGARDING TEMP TABLES
+=============================================
+SELECT name, create_date FROM TempDB.sys.tables WHERE name LIKE '#%'
+
+
+SELECT * FROM TempDB.information_schema.tables
+
+
+
+
+
+
+Limitations of Local temporary tables
+=====================================
+We can't use local temporary table inside a SQL Function. 
+We can't create trigger on a temporary tables.
+We can't create View on the temporary tables.
+
+
+
+
+
+
+
+
+MAGIC TABLES
+=================================================================================
+ 
+Magic tables are nothing but the logical tables maintained by SQL server internally.
+There are two types of Magic tables available in SQL server:
+
+Inserted
+Deleted
+
+We can not see or access these tables directly, not even their data-type. The only method to have access to these tables is Triggers operation either After Trigger or Instead of trigger.
+
+INSERT/UPDATE/DELETE BY USING THE TRIGGERS
+
+
+
+In Database for any table or view When trigger is fired for any DML Command
+Then 2 tables automatically create on backend
+One table is for Insert and other one is for Delete.
+These Tables are called Magic Tables
+Number of records in both tables should be same.
+==============================================================================
+
+
+
+
+
+
+WORKING WITH AUTOIDENTITY COLUMNS
+===================================
+RULE 1) MANDATORY MAINTAIN PRIMARY KEY IN THE TABLE
+RULE 2) AUTO IDENTITY COLUMN MUST BE INTEGER TYPE COLUMN
+RULE 3) BY DEFAULT SET IDENTITY_INSERT SCHEMA.TABLENAME OFF
+
+
+DBCC CHECKIDENT ('SCHEMA.TABLENAME', RESEED, VALUE);
+//VALUE LIKE 1M YOUR CURRENT VALUE
+
+EX=> DBCC CHECKIDENT ('SCHEMA.TABLENAME', RESEED, 0);
+
+
+
+IF YOU DELETE THE IN BETWEEN THE VALUES YOU CAN ON THE SET IDENTITIY PROPERTY
+
+
+SET IDENTITY_INSERT SCHMEA.TABLENAME ON
+
+INSERT INTO COLUMNNAMES VALUES(MENTION IDENTITY SPECIFIC)
+
+AGAIN SET IDENTITY INSERT OFF
+=======================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+MAX Columns in Sql server - 1024 ;
+MAX Length of varchar variable - 8000 ;
+Page Size in Sql Server -  8 KB ;
+MAX Size of Row is allowed in Sql Server - 8060 Bytes ;
+MAX Foreign Key in Single Table - 253 F Keys ;
+How many XML Indexes Possible in Sql Server - 249 ;
+Temporary Table name Length Upto - 116 Characters ;
+How many Parameters Per Stored Procedure in Sql Server  - 2100 ;
+
+
+========================================================================
+
+
+Blocking in Sql server
+=======================
+IF YOU SEE ALL BACKGROUND PROCESS YOU CAN USE "SP_WHO2" COMMAND
+
+
+IF YOU WANT TO SEE LIST OF BLOCKED PROCESS YOU CAN USE THIS QUERY
+
+SELECT * FROM MASTER.DBO.SYSPROCESSES WHERE BLOCKED <> 0
+
+
+
+
+
+Compare the Case sensitive in SPS
+=================================
+COLLATE SQL_Latin1_General_CP1_CS_AS
+
+ex::
+IF(@GetPassword COLLATE SQL_Latin1_General_CP1_CS_AS = @Password)
+
+BEGIN
+	print 'comparision'
+END
+
+
+
+
+
+
+=========================================================================
+Q1)  I HAVE A COLUMN 4 VALUES IN A SINGLE TABLE.
+
+CAN YOU DISPLAY THE SECOND VALUE IS THE FIRST RECORD REMAINING ALL IS SAME ORDER
+
+
+
+
+SELECT * FROM (
+select * from TABLENAME where COLUMNNAME='SECONDVALUE'
+UNION ALL
+select * from TABLENAME where not COLUMNNAME='SECONDVALUE'
+) TABLENAME ;
+  
+		{OR}
+
+
+SELECT * FROM (
+select * from TABLENAME where COLUMNNAME='SECONDVALUE'
+UNION ALL
+select * from TABLENAME where COLUMNNAME<>'SECONDVALUE'
+)TABLENAME ;
+
+======
+
+Q2) how to create a table if already exists if u r improving testing purpose
+
+
+SELECT * INTO NEWTABLENAME from OLDTABLENAME
+UNION ALL
+SELECT * From OLDTABLENAME
+=========
+
+
+Q3) HOW TO INSERT LAST RECORD AS SUM VALUES
+
+INSERT INTO TABLENAME values (FIRSTCOLUMNVALUE, (select sum(COLUMNNAME) from TABLENAME) )
+
+==== 
+
+
+
+
+
+Q)How to delete user error 15138 in sql server
+USE DATABASENAME;
+
+SELECT s.name
+FROM sys.schemas s
+WHERE s.principal_id= USER_ID('Username with domain');
+
+
+ALTER AUTHORIZATION ON SCHEMA::DATABASE TO dbo 
+GO
+
+DROP USER [username]
+
+
+
+Ex
+
+USE CPS_CL;
+
+SELECT s.name
+FROM sys.schemas s
+WHERE s.principal_id= USER_ID('CELERMENTIS\sumanth');
+
+
+ALTER AUTHORIZATION ON SCHEMA::CPS TO dbo 
+GO
+DROP USER [CELERMENTIS\rajasekhar.goodali]
+
+
+=====================
+DB Mail
+=====================
+NOTE 1::	IF YOUR ASSIGN DB MAIL AS JOB., FIRST YOU CAN ENABLE THE OPTION IN 
+
+	RIGHT CLICK ON SQLSERVER AGENT => ALERT SYSTEM => ENABLE THE MAIL PROFILE., SELECT THE MAIL 1 SYSTEM AND MAIL PROFILE 
+
+
+
+NOTE 2:: DATABASE MAIL ALWAYS USE THE DATABASE "MSDB"
+
+NOTE 3:: IF YOUR JOB IS SUCCESS OR FAILURE NOTICE., YOU CAN CREATE A OPERATORS ..
+	
+	EXPLORE THE SQL SERVER AGENT => SELECT OPERATORS => NEW OPERATOR.. 
+
+	THIS OPTION.. WHEN EVER YOU CREATE THE JOB IN THAT NOTIFACTIONS -> SELECT EMAIL -> SELECT THE OPERATORS 
+
+
+
+Step 1:
+	Open SSMS -> Connect Server Instance -> Management -> Database Mail
+
+Step 2:
+	Right Click on Database Mail -> Configure Database Mail
+
+Step 3:
+	Select -> Set up Database Mail by performing the following tasks
+
+Step 4:
+	Enter Profile Name., if you want describe something about that profile write description also., 
+
+Step 5:
+	New Database Mail Account 
+	
+	Enter the Account Name, email address, Display Name, Server name, Port number., and the Basic Authentication is enter your mail id and password
+
+	ex
+	--
+	Account Name: Celermentis
+	Email: rajasekhar.goodali@celermentis.com
+	Display name: CelerMentis DB Mail
+	Reply e-mail: rajasekhar.goodali@celermentis.com
+	Server name: smtp.office365.com
+	Port: 587
+select the SSL
+
+
+Step 6: 
+	Send Test E-Mail
+
+	if you have how many profiles., that will show here
+	
+	To; Email id's 
+
+Step 7: 
+	Send Test E-mail
+===========================
+These Queries are used for what is your profile, account and etc., details from DB Mail...
+
+
+use msdb
+select * from sysmail_profile
+select * from sysmail_account
+select * from sysmail_profileaccount
+select * from sysmail_server
+select * from sysmail_servertype
+
+// Internally Sending an Email for use the Stored procedure as
+
+
+Use msdb
+go
+sp_helptext sp_send_dbmail
+
+ex
+==
+-- Start T-SQL
+USE msdb
+EXEC sp_send_dbmail 
+  @profile_name='MailProfile1',
+  @recipients='someone@microsoft.com',
+  @subject='Test Attachment',
+  @body='An attachement has been included in this email.',
+  @file_attachments='D:\temp\blog.jpg'
+-- End T-SQL
+-- failure mail notifications ref link job fails
+http://www.sherweb.com/blog/how-to-set-up-database-mail-for-sql-server-job-failures/
+===============================
+
+
+
+
+=================
+Backups... 
+=================
+Step 1:
+	Open SSMS -> Connect Server Instance -> Management -> Maintenance Plans -> Maintenance Plan Wizard
+
+Step 2:
+	Enter Plan name..
+
+Step 3:
+	Schedule (Change)
+	set according to your time period
+
+Step 4:	
+
+ 	Select Maintanence tasks... like
+ Back Up Database (Full), Back Up Database  (Differential), Back Up Database (Transaction Log)., and etc., 
+
+Step 5:
+	Finish..
+
+//According to Maintain which path you are mention by default the maintenance plan folder., automatically back up will store that related folder ...
+
+
+
+
+=================
+IMAGES
+=================
+NOTE 1:: IMAGES ARE STORED IN VARBINARY FORMAT IN SQL SERVER
+
+IF YOU GET VARBINARY CODE FORM OUTSIDE OF SQL SERVER WE CAN USE BELOW CODE
+
+DECLARE @VARIABLENAME varbinary(max)
+SET @VARIABLENAME = (SELECT * FROM OPENROWSET (BULK 'QUALIFIED_PATH', SINGLE_BLOB) a)
+print @VARIABLENAME 
+
+
+SELECT * FROM OPENROWSET (BULK 'QUALIFIED_PATH', SINGLE_BLOB) a
+
+
+EX
+==
+DECLARE @IMG varbinary(max)
+SET @IMG = (SELECT * FROM OPENROWSET (BULK 'D:\logo1.jpg', SINGLE_BLOB) a)
+print @IMG
+
+
+SELECT * FROM OPENROWSET (BULK 'D:\logo1.jpg', SINGLE_BLOB) a
+
+
+
+
+
+=======================
+SETTINGS FOR SQL SERVER 
+=======================
+
+EXEC sp_configure 'show advanced options', 1 
+GO 
+RECONFIGURE; 
+GO
+ 
+EXEC sp_configure 'Ole Automation Procedures', 1 
+GO 
+RECONFIGURE; 
+GO 				-- TO RUN SYSTEM PROCEDURES
+
+ 
+EXEC sp_configure 'show advanced options', 1 
+GO 
+RECONFIGURE;
+GO
+
+EXEC sp_configure 'Agent XPs', 1;
+GO
+RECONFIGURE
+GO   				-- ERROR 15281 CONFIGURE ADVANCED OPTIONS AND AGENT XPS
+
+
+EXEC sp_configure 'xp_cmdshell',1  
+GO  
+RECONFIGURE;  
+GO 				-- TO RUN IMAGE ADVANCED AND CMDSHELL

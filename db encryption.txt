@@ -1,0 +1,78 @@
+http://aesencryption.net/
+==========================
+
+use cpay
+
+select * from Employee
+
+CREATE MASTER KEY ENCRYPTION BY PASSWORD='My$Strong$Password$123' 
+
+ALTER DATABASE CPAY SET ENCRYPTION ON
+
+CREATE CERTIFICATE cert_emp WITH SUBJECT = N'Employee certificate',
+START_DATE = N'2015-09-09', EXPIRY_DATE = N'2015-09-10';
+
+CREATE SYMMETRIC KEY symkey_emp WITH ALGORITHM = AES_256 ENCRYPTION BY CERTIFICATE cert4TDE
+
+
+CREATE CERTIFICATE Cert4TDE WITH   SUBJECT = 'Certificate for TDE';
+
+CREATE DATABASE ENCRYPTION KEY WITH ALGORITHM = AES_256
+ENCRYPTION BY SERVER CERTIFICATE cert_emp
+
+
+SELECT (database_id), encryption_state,   percent_complete, key_algorithm, key_length
+FROM sys.dm_database_encryption_keys
+
+
+TRUNCATE TABLE EMPLOYEE;
+OPEN SYMMETRIC KEY symkey_emp DECRYPTION BY CERTIFICATE cert_emp;
+INSERT INTO cPay.dbo.EMPLOYEE(EmpID, EmpName, Address);
+SELECT Employee.EmpID, EMPLOYEE.EmpName,  ENCRYPTBYKEY(Key_Guid(N'symkey_emp'), Employee.Salary), Employee.Address FROM DBO.Employee;
+CLOSE SYMMETRIC KEY symkey_emp;
+
+
+
+select * from dbo.Employee
+
+insert into Employee values(001,'RS',5000,'tpty');
+
+
+
+
+
+
+GO
+SELECT db.[name]
+  ,db.[is_encrypted]
+  ,dm.[encryption_state]
+  ,dm.[percent_complete]
+  ,dm.[key_algorithm]
+  ,dm.[key_length]
+FROM [sys].[databases] db
+LEFT OUTER JOIN [sys].[dm_database_encryption_keys] dm
+ON db.[database_id] = dm.[database_id];
+GO
+
+
+USE CPAY;
+GO
+CREATE MASTER KEY ENCRYPTION BY PASSWORD = 'My$Strong$Password$123';
+go
+CREATE CERTIFICATE MyServerCert WITH SUBJECT = 'My DEK Certificate';
+go
+
+USE CPAY;
+GO
+CREATE DATABASE ENCRYPTION KEY
+WITH ALGORITHM = AES_128
+ENCRYPTION BY SERVER CERTIFICATE cert_emp ;
+GO
+
+
+use cPay
+
+select * from sys.dm_database_encryption_keys
+
+select * from sys.openkeys
+

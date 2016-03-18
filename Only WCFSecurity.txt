@@ -1,0 +1,34 @@
+WCF Security
+=============
+
+Step 1:
+	Create WCF Service
+
+Step 2:
+	If u want to Application Configuration then thant time only create App.config 
+
+			or
+
+	Change the settings in Web.config
+	
+Step 3: 
+	Right Click -> Edit WCf Configuration 
+	
+Step 4:	
+	Create a Binding like wsHttpBinding 
+
+Step 5:
+	Diagnostics -> Log Auto Flush, Message Logging and Tracing., Message logging is true., then that time only your r see the parameter in web_message.svclog
+
+
+Step 6:
+	In Advanced Service Behaviours is Service Credentials
+
+Step 7: 
+	Save settings
+
+Step 8:
+	Open Folder in Wcf Service select web_messages.svclog
+
+	(in formated parameters is the pass the values in wcf service running time,)
+

@@ -1,0 +1,30 @@
+sql sites
+==========
+
+http://www.ryanfarley.com/blog/category/58.aspx
+-- for tsql to pdf..
+
+http://webcache.googleusercontent.com/search?q=cache:http://ryanfarley.com/blog/archive/2004/10/25/1127.aspx&gws_rd=cr&ei=6PjfVqCiGoOPuAT25omADQ
+
+http://www.ryanfarley.com/blog/archive/2004/10/25/1127.aspx
+-- for tsql to pdf..
+
+http://www.1keydata.com/sql/sql-wildcard.html
+
+https://www.mssqltips.com/
+
+http://www.infotechguyz.com/
+
+http://sqlmag.com/ --> tracking changes
+
+http://www.sql-server-helper.com/
+
+http://www.databasejournal.com/
+
+http://raresql.com/
+
+
+http://www.slideshare.net/Tech_MX/database-administrator-14155432
+
+
+http://voluntarydba.com/

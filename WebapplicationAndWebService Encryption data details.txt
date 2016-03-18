@@ -1,0 +1,114 @@
+Scenario 1:
+
+Web application to Web Service Security
+======================================
+
+Step 1:
+	Create WCF Service
+
+Step 2:
+	Right Click on Web.Config
+
+Step 3:
+	Create New Services by using WsHttpBinding
+   
+
+	In General Select BindingConfiguration
+
+Step 4:
+ 	Create Binding WsHttpBinding
+  	 In Security choose Message
+
+Step 5:
+	Create Service Behavious in Advanced 
+	
+	Add --> Service Credentials
+
+Step 6:
+	Hosting Environment Enable ASP.NET Compatibility
+
+	Save the Settings
+
+
+Web Applicaiton
+===============
+
+Step 1:
+	Create the Web application
+
+Step 2:
+	Call Web Service Method in aspx.cs files by using Tool box
+	
+Step 3: 
+	Visual Studio Run as Administrator
+
+Step 4:
+	open Web application and WCF service in Administrator
+
+Step 5:
+	Right Click on Web.Config
+
+Step 6:
+	Create New Service 
+	Binding  and Binding Configuration mention in creation of service
+
+Step 7:
+	Create client
+	Create Endpoints as WsHttpBinding 
+		inthat  Address is mention WCFService  Address
+		Binding and BindingConfiguration
+
+Step 8:
+	Create Binding WsHttpBinding
+		in Security Mode as Message
+		EstablishSecurityContext is True
+		MessageClientCreditional type is Windows
+
+Step 9: 
+	Enable Hosting Environment in Advanced
+		Enable ASP.NET Compatibility
+
+	Save Configurations
+
+Step 10:
+	Tools -> WCF Service Configuration Editor
+
+	File -> New configuration
+		
+		Diagnostics -> On the Log Auto Flush, Message Logging, and Tracing
+
+
+	Save the Configuration in your Project Folder by default it is App.config
+
+
+Step 11:
+	Run the Web Application
+
+Step 12: 
+	Right Click on the Project 
+		Select Open the Folder in File Explorer
+		
+ Copy path and view the Project folder.
+
+Step 13:
+	If it is 
+	Web application the file name is Web_messages.svclog
+	Windows Form Application the File name is App_messages.svclog
+
+Step 14:
+	Open the Web_messages.svclog 
+		Activity..
+		Select last activity 
+			choose XML and Message the details
+
+
+	This all encryption data
+		
+ 
+
+
+
+
+
+
+		

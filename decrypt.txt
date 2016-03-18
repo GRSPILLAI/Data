@@ -1,0 +1,128 @@
+1) CREATE ALL IP IN FILES (.SQL FILE) AND STORE THESE IN A WINDOWS SECURITY PROTECTED FOLDER
+
+2) USE SOURCE CODE MANAGEMENT SOFTWARE (GIT, SUBVERSION)
+
+3) ENCRYPT OBJECTS IN SQL SERVER
+
+4) OPTIONAL : KEEP AN DECRYPTED COPY OF THE DATABASE WITH ONLY SYSADMIN LEVEL ACCESS
+
+5) OPTIONAL : BACKUPS..
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SP_HELPTEXT 'DBO.emps'
+
+
+USE cPay
+SP_DATABASES
+
+select * from sys.sql_modules s
+ inner join sys.objects o on s.object_id=o.object_id
+ where type in ('p','tr','FN','tf','v')
+ 
+ 
+   OBJECT_ID('emps')
+
+from sys.sql_modules s inner join
+
+sys.objects o on s.object_id = o.object_id
+
+where type 
+
+
+
+SELECT * FROM sys.all_sql_modules 
+WHERE object_id=OBJECT_ID('emps') 
+
+exec sp_helptext emps
+
+
+SELECT DEFINITION FROM SYS.all_sql_modules WHERE object_id= OBJECT_ID('VSP.CalculateDistance')
+
+
+SELECT object_definition(object_id) as [Proc Definition]
+FROM sys.objects 
+WHERE type='FN'
+
+
+
+
+SP_HELPTEXT 'dbo.emps'
+
+
+
+SELECT * FROM syscomments WHERE id = object_id('dbo.emps') 
+
+select * from sys.dm_exec_connections
+
+SELECT * FROM [sys].endpoints
+
+SELECT * FROM [sys].[dm_exec_connections] ec WHERE session_id = @@SPID
+
+SELECT * FROM [sys].endpoints E WHERE e.[name] = 'Dedicated Admin Connection' 
+
+
+
+
+
+select * from dbo.Employee
+
+exec sp_configure 'show advanced options', 1
+RECONFIGURE WITH OVERRIDE
+
+
+exec sp_configure 'remote admin connections', 1
+RECONFIGURE WITH OVERRIDE
+
+SP_CONFIGURE
+
+
+
+
+sp_configure 'show advanced options', 1;
+GO
+RECONFIGURE;
+GO
+
+OPEN SYMMETRIC KEY KEY4CELLENCRYPTION DECRYPTION BY STOREDPROCEDURE EMPS
+
+
+
+
+
+
+

@@ -1,0 +1,130 @@
+
+
+CREATE MASTER KEY ENCRYPTION BY PASSWORD = 'YOURSTRONGPASSWORD@12345'
+GO
+
+CREATE CERTIFICATE samplecertificate WITH SUBJECT = 'sampledatabase'
+
+
+CREATE SYMMETRIC KEY   samplesymmetrickey
+WITH ALGORITHM   = AES_128 
+ENCRYPTION BY   CERTIFICATE samplecertificate;
+
+
+
+CREATE TABLE TABLENAME
+(
+sno int,
+name varchar(50),
+pwd VARBINARY(25)
+)
+
+
+select * from [CPS_Test]
+
+OPEN SYMMETRIC KEY samplesymmetrickey DECRYPTION BY CERTIFICATE samplecertificate
+
+INSERT INTO TABLENAME(sno, name, pwd)
+VALUES (3, 'Raja', EncryptByKey(Key_GUID('samplesymmetrickey'),'52625'))
+
+
+SELECT CONVERT(VARCHAR(25), DECRYPTBYKEY(pwd))AS Password FROM TABLENAME
+
+CLOSE SYMMETRIC KEY samplesymmetrickey 
+ 
+
+
+
+
+DROP MASTER KEY 
+
+DROP CERTIFICATE samplecertificate
+
+DROP SYMMETRIC KEY samplesymmetrickey
+
+
+
+
+SELECT * FROM master.sys.symmetric_keys 
+select * from sys.certificates
+
+========================================================
+Use CPS_Test
+GO
+CREATE MASTER KEY ENCRYPTION BY PASSWORD = 'YOURSTRONGPASSWORD@12345'
+GO
+CREATE CERTIFICATE cpstestcertficate WITH SUBJECT = 'DESCRIPTION OF Certificate'
+GO
+
+DROP MASTER KEY
+
+DROP CERTIFICATE cpstestcertficate
+
+DROP SYMMETRIC KEY  cpstestsymmetric
+
+CREATE SYMMETRIC KEY cpstestsymmetric
+WITH ALGORITHM   = AES_128 
+ENCRYPTION BY   CERTIFICATE cpstestcertficate;
+go
+
+select Unique_ID, Password from [User].[Users]
+where Unique_ID='E0995B41-81F0-4D0E-B416-045C4CA1B073'
+
+
+use CPS_Test
+GO
+OPEN SYMMETRIC KEY cpstestsymmetric DECRYPTION BY CERTIFICATE cpstestcertficate
+GO
+SELECT CONVERT(VARCHAR(100), DECRYPTBYKEY(Password))AS ALIASCOLUMNNAME FROM [User].[Users] where Unique_ID='41b61563-844e-49b1-b4f7-999dc0ce8ce2'
+
+
+insert into  [User].[Users] values(newid(), 1, 1, '9052426286','grs@gmail.com','r.com', EncryptByKey(Key_GUID('cpstestsymmetric'),'124hello'),NULL, NULL,0,NULL,1,NULL,NULL);
+
+select * from [User].[Users] where Unique_ID='A9FACE2B-DDD9-4597-A52C-DE34B5A6337B'
+
+
+DELETE FROM [User].[Users]
+
+
+
+
+	use master
+	use cps_test
+
+
+
+	OPEN SYMMETRIC KEY cpstestsymmetric DECRYPTION BY CERTIFICATE cpstestcertficate
+
+	select * from [User].[Users]
+
+	Insert into [User].Users( [Unique_ID] ,[User_Type] ,[User_Status] ,[Phone_Number] ,[Email],[Recovery_Email],[Password],[Session_ID],[OTP_ID]	,[Social_Login]	,[Social_Login_Type],[Authentication],[Wrong_Password_Hits],[WPH_DateTime])
+	VALUES  ( newid(),1, 1, '9052426285','grs@gmail.com','r.com', EncryptByKey(Key_GUID('cpstestsymmetric'),'Password123'),NULL, NULL,0,'hello',1,2,GETDATE())       
+   
+	
+	SELECT Unique_ID, CONVERT(VARCHAR(25), DECRYPTBYKEY(Password))AS Password FROM [User].[Users]
+
+	Update [User].[Users] set Password=EncryptByKey(Key_GUID('cpstestsymmetric'),'deepika@786') where Unique_ID='41B61563-844E-49B1-B4F7-999DC0CE8CE5'
+
+	CLOSE SYMMETRIC KEY samplesymmetrickey
+=================
+in comparasion
+ with case sensitive
+
+	COLLATE SQL_Latin1_General_CP1_CS_AS 
+
+example
+
+DECLARE @GetPassword varchar(75)
+SET @GetPassword = (SELECT CONVERT(VARCHAR(25), DECRYPTBYKEY(Password))AS Password FROM [User].[Users]	where Unique_ID=@UniqueID COLLATE SQL_Latin1_General_CP1_CS_AS)
+==============================================
+
+
+
+	Insert into  [Customer].[NFC_Cards]
+	VALUES  ('04F2AD79E20280',0,'dsf',GETDATE(), NULL, EncryptByKey(Key_GUID('cpstestsymmetric'),'123456'),'cbbce75e-8af6-44e9-89d3-279b7f1b3408')       
+   
+
+
+
+
+======================

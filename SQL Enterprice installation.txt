@@ -1,0 +1,116 @@
+Enterprise
+=========
+Installation Type
+
+New SQL Server Stand-alone installation or add features to an existing installation
+
+
+Product Key
+	enter key
+
+next
+
+Choose Add features to an existing instance 
+or 
+perform new installtion of SQL Server 2012
+
+
+
+next
+
+
+License Terms
+
+	accept license
+
+next
+
+Setup Role
+
+	All features with Defaults
+
+next
+
+Feature Selection
+	By default selection
+next
+
+
+Installation Rules
+	Process -next
+
+Instance Configuration
+	ENTER INSTANCE NAME
+
+NEXT
+
+Disk Space Requirements
+
+NEXT
+
+Server Configuration
+	SET SQL SERVER AGENT SERVICE IS AUTOMATIC
+
+NEXT
+
+Database Engine Configuration
+
+	Enter Mixed Mode
+	
+		enter password
+
+
+		add Administrator as user
+
+
+next
+
+Analasis Services Configuration
+
+	choose Multidimensioanl and data mining mode
+
+	enter current user and adminstrator
+
+
+next
+
+Reporting Services Configuration
+
+	install and configure
+
+	Reporting - install // if already installed automatically hide
+
+next
+
+Distributed Replay Controller
+		add current user and admin
+
+Next
+
+Distributed Replay Client
+	no need to enter data
+next 
+
+Error Reporting
+	no need to enter data
+
+Next
+
+Installation Configuration Rules
+	process
+
+Next
+
+Ready to Install
+
+Install
+
+Installation Progress
+
+
+
+
+
+
+
+	
