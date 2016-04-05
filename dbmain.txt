@@ -78,9 +78,13 @@ MAGIC TABLES
 
 
 
+
 FILLFACTOR 
 CASCADING REFERENTIAL INTEGRITY
+HORIZONTAL PARTITIONING
 ======================================================
+
+
 
 
 
@@ -95,6 +99,46 @@ SQL OVERVIEW
  TCL (Transaction Control Language) - BEGIN, TRAN, COMMIT, TRAN, ROLLBACK
 
 ============================================================================
+
+
+
+
+
+
+TABLE CREATION
+=============
+CREATE TABLE TABLENAME
+(
+VARIABLENAME1 DATATYPE(SIZE) NOT NULL,
+VARIABLENAME2 DATATYPE(SIZE) NULL
+	CONSTRAINT [PK_TABLENAME] PRIMARY KEY CLUSTERED
+	(
+	[VARIABLENAME] ASC
+	)
+
+)
+
+
+CREATING FOREIGN KEY THROUGH QUERY
+====================================
+ALTER TABLE [SCHEMANAME].[TABLENAME]
+ADD constraint FK_TABLENAME1_TABLENAME2 FOREIGN KEY (VARIABLENAME FK TABLE) 
+references [SCHEMANAME].[TABLENAME] (VARIABLENAME PK TABLE) 
+
+/* IF YOU WANT ADD MULTIPLE CONSTRAINTS IN SAME TABLE YOU CAN DIRECTLY WRITE CONSTRAINT SEPARATION WITH  "," */
+
+
+
+DELETING FOREIGN KEY RELATIONSHIP THROUGH QUERY
+===============================================
+ALTER TABLE [SCHEMANAME].[TABLENAME]
+DROP constraint FK_TABLENAME1_TABLENAME2
+
+
+
+
+
+
 
 
 
@@ -330,6 +374,7 @@ SELECT CONVERT(date, (SELECT ... STATEMENTS LIKE GET COLUMN VALUE THAT VALUE MUS
 
 
 
+
 ==================
  PROCEDURES
 ==================
@@ -338,8 +383,9 @@ SELECT CONVERT(date, (SELECT ... STATEMENTS LIKE GET COLUMN VALUE THAT VALUE MUS
 	OUTPUT VARIABLES ARE MENTION  AS @VARIABLE_NAME DATATYPE OUTPUT
 
 	OPTIONAL VARIABLE ARE MENTION AS
-@VARIABLE_NAME DATATYPE = NULL	
-
+	@VARIABLE_NAME DATATYPE = NULL	
+	WITH ENCRYPTION 
+	/* IF YOU WANT TO PROCEDURE IS UN VIEWABLE FOR ANY ONE... NOTE: MAINTAIN ONE BACKUP FOR SP USE WITH ENCRYPTION */
  AS
  BEGIN
 	
@@ -385,7 +431,9 @@ SELECT CONVERT(date, (SELECT ... STATEMENTS LIKE GET COLUMN VALUE THAT VALUE MUS
 
 	  PRINT 'YOUR MESSAGES'
  END
+
 =====================================
+
 
 
 ENCRYPTION IS NOT POSSIBLE FOR
@@ -962,6 +1010,7 @@ GO
 DROP USER [CELERMENTIS\rajasekhar.goodali]
 
 
+
 =====================
 DB Mail
 =====================
@@ -1138,3 +1187,81 @@ EXEC sp_configure 'xp_cmdshell',1
 GO  
 RECONFIGURE;  
 GO 				-- TO RUN IMAGE ADVANCED AND CMDSHELL
+
+
+
+
+===========================================================================
+Permissions for STORED PROCEDURE
+===========================================================================
+
+GRANT PERMISSIONS FOR PROCEDURE THROUGH TSQL
+
+GRANT EXECUTE ON OBJECT::[Schemaname].[ProcedureName]
+TO "DomainName\UserName"; // ONLY YOU CAN EXECUTE THE PROC
+
+
+GRANT ALTER ON OBJECT::[Schemaname].[ProcedureName]
+TO "DomainName\UserName"; // MODIFY THE PROC
+
+
+GRANT VIEW DEFINITION ON OBJECT::[Schemaname].[ProcedureName]
+TO "DomainName\UserName"; // ONLY FOR VIEW THE PROC
+
+
+
+Ex:
+	GRANT EXECUTE ON OBJECT::[dbo].[Proc_Add_Money_to_Commission_Account]
+	TO "CELERMENTIS\rajasekhar.goodali";
+
+
+GRANT ALTER ON OBJECT::[Schemaname].[ProcedureName]
+TO "DomainName\UserName"; // MODIFY THE PROC
+
+
+
+		(OR)
+
+Manual Procedure
+
+Step 1:
+	Select Database
+
+Step 2:
+	Programmability
+
+Step 3:
+	Right Click On Procedure -> Select Properties
+
+Step 4:
+	Select Permissions Tab
+
+Step 5:
+	Select User name 
+
+	Control -> Grant and With Grant Select
+		
+Step 6:
+	Ok.
+
+---------------------
+
+
+REMOVE PERMISSIONS FOR PROCEDURE THROUGH TSQL
+
+
+DENY EXECUTE ON OBJECT::[Schemaname].[ProcedureName]
+TO "DomainName\UserName";
+
+
+DENY ALTER ON OBJECT::[Schemaname].[ProcedureName]
+TO "DomainName\UserName";
+
+DENY VIEW DEFINITION ON OBJECT::[Schemaname].[ProcedureName]
+TO "DomainName\UserName"; 
+
+
+Ex:
+	DENY EXECUTE ON OBJECT::[dbo].[Proc_Add_Money_to_Commission_Account]
+	TO "CELERMENTIS\rajasekhar.goodali";
+===============================================================================
