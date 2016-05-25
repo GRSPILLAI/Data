@@ -81,7 +81,14 @@ MAGIC TABLES
 
 FILLFACTOR 
 CASCADING REFERENTIAL INTEGRITY
-HORIZONTAL PARTITIONING
+
+PARTITIONING
+	Table Partitioning
+	Horizontal Partitioning
+	Patition Function
+	Partition Scheme
+	Partition View
+	Partition Index
 ======================================================
 
 
@@ -893,8 +900,6 @@ AGAIN SET IDENTITY INSERT OFF
 
 
 
-
-
 MAX Columns in Sql server - 1024 ;
 MAX Length of varchar variable - 8000 ;
 Page Size in Sql Server -  8 KB ;
@@ -1152,9 +1157,45 @@ print @IMG
 
 
 SELECT * FROM OPENROWSET (BULK 'D:\logo1.jpg', SINGLE_BLOB) a
+===
+
+How to Insert a Image into Table ?
+
+Step 1:
+	Create a variable type is Varbinary (or) image in Creating Table
+
+Step2:
+	
+	INSERT INTO [Schemaname].[Tablename](image_variable)
+	select bulkcolumn from openrowset(BULK 'QUALIFIED_PATH', SINGLE_BLOB)as 	image
 
 
+// incase multiple images in single record you can use 
 
+	INSERT INTO [Schemaname].[Tablename](image_variable1, (image_variable2)
+	values(
+	
+(select bulkcolumn from openrowset(BULK 'QUALIFIED_PATH', SINGLE_BLOB)as 	image),
+(select bulkcolumn from openrowset(BULK 'QUALIFIED_PATH', SINGLE_BLOB)as 	image)
+)
+
+====
+
+
+How to View images SQL Server Database ?
+
+Step 1:
+	Install "SQL Image Viewer" in your system
+	//Trail only for one time application start...
+
+Step 2:
+	Select Database Server., User name Password
+
+Step 3:
+	Write in which table you have image that table query run in SQL Editor
+
+
+In Results Displaying Storing images from Particular Database
 
 
 =======================
@@ -1211,7 +1252,7 @@ TO "DomainName\UserName"; // ONLY FOR VIEW THE PROC
 
 
 Ex:
-	GRANT EXECUTE ON OBJECT::[dbo].[Proc_Add_Money_to_Commission_Account]
+	GRANT EXECUTE ON OBJECT::[dbo].	[Proc_Add_Money_to_Commission_Account]
 	TO "CELERMENTIS\rajasekhar.goodali";
 
 
@@ -1262,6 +1303,96 @@ TO "DomainName\UserName";
 
 
 Ex:
-	DENY EXECUTE ON OBJECT::[dbo].[Proc_Add_Money_to_Commission_Account]
+	DENY EXECUTE ON OBJECT::[dbo].		[Proc_Add_Money_to_Commission_Account]
 	TO "CELERMENTIS\rajasekhar.goodali";
 ===============================================================================
+
+Permissions for Accessing Roles
+
+
+ALTER ROLE db_datareader ADD MEMBER "CELERMENTIS\rajasekhar.goodali"
+GO
+
+ALTER ROLE db_datawriter ADD MEMBER "CELERMENTIS\rajasekhar.goodali"
+GO
+
+ALTER ROLE db_ddladmin ADD MEMBER "CELERMENTIS\rajasekhar.goodali"
+GO
+
+
+
+ALTER ROLE db_datareader DROP MEMBER "CELERMENTIS\rajasekhar.goodali"
+GO
+
+ALTER ROLE db_datawriter DROP MEMBER "CELERMENTIS\rajasekhar.goodali"
+GO
+
+ALTER ROLE db_ddladmin DROP MEMBER "CELERMENTIS\rajasekhar.goodali"
+GO
+
+
+
+
+
+LOG-SHIPPING
+=============================================
+STEP 1:
+
+SELECT name, recovery_model_desc FROM sys.databases 
+WHERE name = 'DATABASENAME'
+
+
+USE [master]
+GO
+ALTER DATABASE [DATABASENAME] SET RECOVERY FULL WITH NO_WAIT
+GO
+
+
+STEP 2:
+	RIGHT CLICK ON DB => PROPERTIES
+
+	SELECT TRANSACTION LOG SHIPPING
+	
+	ENABLE THIS AS A PRIMARY DATABASE IN A LOG SHIPPING CONFIGURATION
+
+
+STEP 3:
+	BACKUP SETTINGS
+
+	NETWORK PATH TO BACKUP FOLDER
+
+	\\BACKUPSERVER\
+
+	SET BACKUP COMPRESSION AS "USE THE DEFAULT SERVER SETTING"
+
+	
+STEP 4:
+	ADD A SECONDARY SERVER DATABASE
+
+	i) INTIALIZE SECONDARY DATABASE
+
+		SELECT YES., GENERATE A FULL BACKUP OF THE PRIMARY DATABASE AND RESTORE IT INTO THE SECONDARY DATABASE
+	
+	ii) COPY FILES 
+	
+	 DESTINATION PATH IS WHERE YOU HAVE TO COPY THE PRIMARY DATABASE PATH., 
+
+	iii) RESTORE TRANSACTION LOG
+
+		SELECT STANDBY MODE (SECONDARY DB WILL BE READ ONLY MODE, USE CAN READ THE DATA)
+
+	SELECT DISCONNECT USERS IN THE DATABASE WHEN RESTORING BACKUPS
+
+
+STEP 5:
+	USE A MONITOR SERVER INSTANCE
+
+	SETTINGS
+
+	CONNECT TO MONITOR SERVER INSTANCE
+
+	SELECT BY IMPERSONATING THE PROXY ACCOUNT OF THE JOB
+
+
+	CLICK OK..
+
